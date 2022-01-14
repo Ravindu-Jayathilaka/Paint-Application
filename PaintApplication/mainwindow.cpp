@@ -41,7 +41,7 @@ void MainWindow::open(){
 
 void MainWindow::save(){
     QAction *action= qobject_cast<QAction *>(sender());
-    QByte fileFormat = action->data().toByteArray();
+    QByteArray fileFormat = action->data().toByteArray();
     saveFile(fileFormat);
 }
 
@@ -82,9 +82,9 @@ void MainWindow::createActions(){
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
     penColorAct = new QAction(tr("&Pen Color..."), this);
-    connect(penColorAct, SIGNAL(triggered()), scribbleArea, SLOT(penColor()));
+    connect(penColorAct, SIGNAL(triggered()), this, SLOT(penColor()));
     penWidthAct = new QAction(tr("Pen & Width..."), this);
-    connect(penColorAct, SIGNAL(triggered()), scribbleArea, SLOT(penWidth()));
+    connect(penWidthAct, SIGNAL(triggered()), this, SLOT(penWidth()));
 
     clearScreenAct = new QAction(tr("&Clear Screen..."), this);
     clearScreenAct-> setShortcut(tr("Ctrl+L"));
@@ -104,14 +104,14 @@ void MainWindow::createMenus(){
         saveAsMenu->addAction(action);
     fileMenu = new QMenu(tr("&File"), this);
     fileMenu->addAction(openAct);
-    fileMenu->addAction(saveAsMenu);
+    fileMenu->addMenu(saveAsMenu);
     fileMenu->addAction(printAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
     optionMenu = new QMenu(tr("&Options"), this);
     optionMenu->addAction(penColorAct);
     optionMenu->addAction(penWidthAct);
-    fileMenu->addSeparator();
+    optionMenu->addSeparator();
     optionMenu->addAction(clearScreenAct);
 
     helpMenu = new QMenu(tr("&Help"), this);
@@ -127,7 +127,7 @@ bool MainWindow::maybeSave(){
     if(scribbleArea->isModified()){
         QMessageBox::StandardButton ret;
         ret = QMessageBox::warning(this, tr("Scribble"),tr("The image has been modified.\n""Do you want to save your changes?"),QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        if(ret == QMessage::Save){
+        if(ret == QMessageBox::Save){
             return saveFile("png");
         } else if (ret == QMessageBox::Cancel){
             return false;
