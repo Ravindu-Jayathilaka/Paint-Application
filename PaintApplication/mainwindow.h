@@ -4,7 +4,7 @@
 #include <QList>
 #include <QMainWindow>
 
-class scribbleArea;
+class ScribbleArea;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,7 +33,7 @@ private:
     void createMenus();
     bool maybeSave();
     bool saveFile(const QByteArray &fileFormat);
-    scribbleArea *scribbleArea;
+    ScribbleArea *scribbleArea;
     QMenu *saveAsMenu;
     QMenu *fileMenu;
     QMenu *optionMenu;
